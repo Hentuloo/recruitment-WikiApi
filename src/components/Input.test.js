@@ -1,13 +1,18 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import Input from 'components/Input';
 import Countries from 'config/Countries';
+import { renderWithThemes } from 'tests/utils';
 
 const setup = () => {
-  const utils = render(
-    <Input items={Countries} placeholder="find" />,
+  const utils = renderWithThemes(
+    <Input
+      items={Countries}
+      placeholder="find"
+      onSelect={() => {}}
+    />,
   );
   const input = utils.getByPlaceholderText(/find/i);
   return {

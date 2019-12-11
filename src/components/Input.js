@@ -75,7 +75,8 @@ const Input = ({ items, placeholder, onSelect }) => {
 
   const handleChange = value => {
     const regex = /^[a-zA-Z\s]*$/;
-    if (value.match(regex) || value === '') changeInputState(value);
+    if (value && (value.match(regex) || value === ''))
+      changeInputState(value);
   };
 
   return (
