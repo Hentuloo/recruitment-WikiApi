@@ -28,47 +28,50 @@ const SearchPage = () => {
   );
   const [error, setError] = useState(null);
 
-  const getCities = isoCode =>
-    getMostPollutedCites(isoCode, (err, data) => {
-      if (err) {
-        setError(err);
-        return false;
-      }
-      if (data) {
-        return data.results.map(({ name }) => name);
-      }
-      return false;
-    });
+  const getCitiesWithDescriptions = async isoCode => {
+    // Fetch most polluted cities and return
+    const fetchedCities = await getMostPollutedCites(
+      isoCode,
+      (err, data) => {
+        if (err) setError(err);
 
-  const getCitiesDescriptions = citiesNames =>
-    getWikiDescriptionsByTitles(citiesNames, (err, data) => {
-      if (err) {
-        setError(err);
-        return false;
-      }
-      if (data) {
-        const {
-          query: { pages },
-        } = data;
+        if (data) {
+          return data.results.map(({ name }) => name);
+        }
 
-        return pages.map(({ title, extract }) => ({
-          city: title,
-          description: extract,
-        }));
-      }
-      return false;
-    });
+        return null;
+      },
+    );
+    // If there is data => fetch Wiki descriptions and return
+    if (fetchedCities) {
+      const citiesWithDescriptions = await getWikiDescriptionsByTitles(
+        fetchedCities,
+        (err, data) => {
+          if (err) setError(err);
+
+          if (data) {
+            return data.query.pages.map(({ title, extract }) => ({
+              city: title,
+              description: extract,
+            }));
+          }
+
+          return null;
+        },
+      );
+      return citiesWithDescriptions;
+    }
+
+    return false;
+  };
 
   const handleSearch = async item => {
     const { isoCode } = item;
-    const fetchedCities = await getCities(isoCode);
-    if (fetchedCities) {
-      const citiesWithDescriptions = await getCitiesDescriptions(
-        fetchedCities,
-      );
-      if (citiesWithDescriptions) {
-        setCities(citiesWithDescriptions);
-      }
+
+    const data = await getCitiesWithDescriptions(isoCode);
+
+    if (data) {
+      setCities(data);
     }
   };
 
