@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import styled from 'styled-components';
 
 import MainTemplate from 'templates/MainTemplate';
@@ -26,40 +26,52 @@ const SearchPage = () => {
       // }
     ],
   );
-  // https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&redirects=1&exintro=1&explaintext=1&titles=Krak%C3%B3w%7CWroc%C5%82aw
+  const [error, setError] = useState(null);
+
   const getCities = isoCode =>
     getMostPollutedCites(isoCode, (err, data) => {
       if (err) {
-        return console.log(err);
+        setError(err);
+        return false;
       }
-      return data.results.map(({ name }) => name);
+      if (data) {
+        return data.results.map(({ name }) => name);
+      }
+      return false;
     });
 
   const getCitiesDescriptions = citiesNames =>
     getWikiDescriptionsByTitles(citiesNames, (err, data) => {
       if (err) {
-        return console.log(err);
+        setError(err);
+        return false;
       }
-      const {
-        query: { pages },
-      } = data;
+      if (data) {
+        const {
+          query: { pages },
+        } = data;
 
-      return pages.map(({ title, extract }) => ({
-        city: title,
-        description: extract,
-      }));
+        return pages.map(({ title, extract }) => ({
+          city: title,
+          description: extract,
+        }));
+      }
+      return false;
     });
 
   const handleSearch = async item => {
     const { isoCode } = item;
     const fetchedCities = await getCities(isoCode);
-    const citiesWithDescriptions = await getCitiesDescriptions(
-      fetchedCities,
-    );
-    setCities(citiesWithDescriptions);
+    if (fetchedCities) {
+      const citiesWithDescriptions = await getCitiesDescriptions(
+        fetchedCities,
+      );
+      if (citiesWithDescriptions) {
+        setCities(citiesWithDescriptions);
+      }
+    }
   };
 
-  console.log(cities);
   return (
     <MainTemplate>
       <Wrapper>
@@ -78,6 +90,7 @@ const SearchPage = () => {
             ))}
           </main>
         )}
+        {error && <span>{error}</span>}
       </Wrapper>
     </MainTemplate>
   );

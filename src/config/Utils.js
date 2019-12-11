@@ -9,9 +9,12 @@ export const getMostPollutedCites = async (countryCode, callBack) => {
     );
     return callBack(null, data);
   } catch (err) {
-    return callBack(err, null);
+    // console.log(err)
+    const { error } = err.response.data;
+    return callBack(error, null);
   }
 };
+
 export const getWikiDescriptionsByTitles = async (
   titles,
   callBack,
@@ -23,6 +26,8 @@ export const getWikiDescriptionsByTitles = async (
     );
     return callBack(null, data);
   } catch (err) {
-    return callBack(err, null);
+    // console.log(err)
+    const { code } = err.response.errors[0];
+    return callBack(code, null);
   }
 };
