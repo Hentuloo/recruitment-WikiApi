@@ -121,14 +121,18 @@ const Input = ({
     <Downshift
       inputValue={inputState}
       onStateChange={({ inputValue: nextInputValue, type }) => {
-        console.log(type);
         if (
           type === '__autocomplete_change_input__' ||
           type === '__autocomplete_click_item__' ||
           type === '__autocomplete_keydown_enter__' ||
-          type === 11
+          type === 11 ||
+          type === 9 ||
+          type === 6
         ) {
           handleChange(nextInputValue);
+        }
+        if (type === 5) {
+          handleChange('');
         }
       }}
       itemToString={item => (item ? item.name : '')}
