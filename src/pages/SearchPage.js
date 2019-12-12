@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import MainTemplate from 'templates/MainTemplate';
 import Input from 'components/Input';
 import Spiner from 'components/Spiner';
+import * as Acordion from 'components/Accordion/';
 
 import Countries from 'config/Countries';
 import {
@@ -25,6 +26,9 @@ const StyledSpiner = styled(Spiner)`
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0.6;
+`;
+const AcordionWrapper = styled.div`
+  margin-top: 20px;
 `;
 
 const SearchPage = () => {
@@ -95,6 +99,17 @@ const SearchPage = () => {
     }
   };
 
+  // const mockData = [
+  //   {
+  //     city: 'Gdańsk',
+  //     description: 'Gdańsk to fajne ',
+  //   },
+  //   {
+  //     city: 'Warszawa',
+  //     description: 'Warszawa to fajne ',
+  //   },
+  // ];
+
   return (
     <MainTemplate>
       <Wrapper>
@@ -104,17 +119,20 @@ const SearchPage = () => {
           onSelect={handleSearch}
         />
         {loading && <StyledSpiner />}
-        {cities.length > 0 && (
-          <main>
-            {cities.map(({ city, description }) => (
-              <section key={city}>
-                <h3>{city}</h3>
-                <p>{description}</p>
-              </section>
-            ))}
-          </main>
-        )}
-        {error && <span>{error}</span>}
+        <AcordionWrapper>
+          {cities.length > 0 && (
+            <Acordion.Wrapper>
+              {cities.map(({ city, description }) => (
+                <Acordion.Section key={city} uniqueLabel={city}>
+                  <Acordion.Title>{city}</Acordion.Title>
+                  <Acordion.Content>{description}</Acordion.Content>
+                </Acordion.Section>
+              ))}
+            </Acordion.Wrapper>
+          )}
+
+          {error && <span>{error}</span>}
+        </AcordionWrapper>
       </Wrapper>
     </MainTemplate>
   );
