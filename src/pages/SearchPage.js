@@ -116,7 +116,9 @@ const SearchPage = () => {
               {cities.map(({ city, description }) => (
                 <Acordion.Section key={city} uniqueLabel={city}>
                   <Acordion.Title>{city}</Acordion.Title>
-                  <Acordion.Content>{description}</Acordion.Content>
+                  <Acordion.Content>
+                    {description || 'Nie ma informacji o tym mieście'}
+                  </Acordion.Content>
                 </Acordion.Section>
               ))}
             </Acordion.Wrapper>

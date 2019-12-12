@@ -20,6 +20,9 @@ const ContentW = styled.p`
       max-height: 300px;
       padding: 10px;
       overflow-y: auto;
+      ${({ theme }) => theme.mediaQuery.md} {
+        max-height: 70vh;
+      }
     `}
 `;
 
