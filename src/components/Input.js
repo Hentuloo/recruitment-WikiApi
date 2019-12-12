@@ -116,13 +116,15 @@ const Input = ({
       onStateChange={({ inputValue: nextInputValue, type }) => {
         if (
           type === '__autocomplete_change_input__' ||
-          type === '__autocomplete_click_item__'
+          type === '__autocomplete_click_item__' ||
+          type === '__autocomplete_keydown_enter__'
         ) {
           handleChange(nextInputValue);
         }
       }}
       itemToString={item => (item ? item.name : '')}
       onSelect={onSelect}
+      defaultHighlightedIndex={0}
     >
       {({
         getInputProps,
@@ -131,12 +133,17 @@ const Input = ({
         isOpen,
         inputValue,
         openMenu,
+        selectHighlightedItem,
       }) => (
         <div>
           <Wrapper>
             <InputField
               {...getInputProps({
                 onFocus: openMenu,
+                onKeyDown: e => {
+                  e.persist();
+                  if (e.key === 'Enter') selectHighlightedItem();
+                },
               })}
               type="text"
               placeholder={placeholder}
