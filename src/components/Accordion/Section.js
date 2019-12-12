@@ -1,4 +1,4 @@
-import { cloneElement } from 'react';
+import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 
 const Section = ({ children, uniqueLabel }) => {
@@ -6,7 +6,7 @@ const Section = ({ children, uniqueLabel }) => {
     cloneElement(child, { uniqueLabel, key: index }),
   );
 
-  return childrenWithLabel;
+  return <section>{childrenWithLabel}</section>;
 };
 
 Section.propTypes = {

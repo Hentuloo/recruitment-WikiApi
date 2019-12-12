@@ -1,5 +1,5 @@
-import React, { useReducer, useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
 
 import MainTemplate from 'templates/MainTemplate';
 import Input from 'components/Input';
@@ -19,6 +19,11 @@ const Wrapper = styled.div`
   min-height: 100vh;
   padding: 80px 0px 0px;
   margin: 0px auto;
+  ${({ afterSearch }) =>
+    afterSearch &&
+    css`
+      padding: 15px 0px 0px;
+    `}
 `;
 const StyledSpiner = styled(Spiner)`
   position: fixed;
@@ -28,19 +33,16 @@ const StyledSpiner = styled(Spiner)`
   opacity: 0.6;
 `;
 const AcordionWrapper = styled.div`
-  margin-top: 20px;
+  margin: 20px 0px 60px;
 `;
 
 const SearchPage = () => {
-  const [cities, setCities] = useReducer(
-    (state, newState) => [...state, ...newState],
-    [
-      // {
-      // city: string,
-      // description:string
-      // }
-    ],
-  );
+  const [cities, setCities] = useState([
+    // {
+    // city: string,
+    // description:string
+    // }
+  ]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -99,20 +101,9 @@ const SearchPage = () => {
     }
   };
 
-  // const mockData = [
-  //   {
-  //     city: 'Gdańsk',
-  //     description: 'Gdańsk to fajne ',
-  //   },
-  //   {
-  //     city: 'Warszawa',
-  //     description: 'Warszawa to fajne ',
-  //   },
-  // ];
-
   return (
     <MainTemplate>
-      <Wrapper>
+      <Wrapper afterSearch={cities.length}>
         <Input
           items={Countries}
           placeholder="Szukaj miast w..."

@@ -4,7 +4,7 @@ export default {
     white: 'rgb(255, 255, 255)',
     darken: '#171e26',
     black: ['rgba(23,30,38,0.85)'],
-    gray: ['rgb(226, 226, 226)'],
+    gray: ['rgb(226, 226, 226)', 'rgb(95, 95, 95);'],
   },
   gradients: [
     `linear-gradient(338deg,rgba(82, 163, 182, 1) 46%,rgba(221, 220, 193, 1) 84%)`,

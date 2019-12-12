@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import AccordionContext from './Context';
 
-const WrapperW = styled.div`
-  background-color: white;
-`;
+const WrapperW = styled.div``;
 
 const Wrapper = ({ children }) => {
   const [activeSection, setActiveSection] = useState(null);

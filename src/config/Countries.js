@@ -17,7 +17,7 @@ const Countries = [
   {
     name: 'Spain',
     image: SpainFlag,
-    isoCode: 'ESP',
+    isoCode: 'ES',
   },
   {
     name: 'France',
