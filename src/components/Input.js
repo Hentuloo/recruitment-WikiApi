@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
 import Downshift from 'downshift';
@@ -16,16 +16,6 @@ const InputField = styled.input`
   background-color: ${({ theme }) => theme.color.white};
 `;
 
-const ListElement = styled.li`
-  display: flex;
-  padding: 10px 20px;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: ${({ theme }) => theme.color.primary[0]};
-  }
-`;
-
 const ListWrapper = styled.ul`
   width: 100%;
   max-height: 170px;
@@ -40,10 +30,22 @@ const ListWrapper = styled.ul`
   ${({ theme }) => theme.mediaQuery.lg} {
     max-height: 400px;
   }
+`;
 
-  ${ListElement}:first-of-type {
+const ListElement = styled.li`
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
     background-color: ${({ theme }) => theme.color.primary[0]};
   }
+
+  ${({ active }) =>
+    active &&
+    css`
+      background-color: ${({ theme }) => theme.color.primary[0]};
+    `}
 `;
 
 const ImageWrapper = styled.div`
@@ -119,10 +121,12 @@ const Input = ({
     <Downshift
       inputValue={inputState}
       onStateChange={({ inputValue: nextInputValue, type }) => {
+        console.log(type);
         if (
           type === '__autocomplete_change_input__' ||
           type === '__autocomplete_click_item__' ||
-          type === '__autocomplete_keydown_enter__'
+          type === '__autocomplete_keydown_enter__' ||
+          type === 11
         ) {
           handleChange(nextInputValue);
         }
@@ -183,6 +187,7 @@ const Input = ({
                       const { name, image } = item;
                       return (
                         <ListElement
+                          active={index === 0 && inputValue !== ''}
                           key={name}
                           {...getItemProps({
                             key: name,
