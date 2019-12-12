@@ -105,6 +105,8 @@ const SearchPage = () => {
     <MainTemplate>
       <Wrapper afterSearch={cities.length}>
         <Input
+          withStorage
+          storageId="citiesInput"
           items={Countries}
           placeholder="Szukaj miast w..."
           onSelect={handleSearch}

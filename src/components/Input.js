@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -70,7 +70,14 @@ const Icon = styled.span`
   cursor: pointer;
 `;
 
-const Input = ({ items, placeholder, onSelect }) => {
+const Input = ({
+  items,
+  placeholder,
+  onSelect,
+  withStorage,
+  storageId,
+}) => {
+  const inputRef = useRef(null);
   const [inputState, changeInputState] = useState('');
 
   const handleChange = value => {
@@ -78,6 +85,30 @@ const Input = ({ items, placeholder, onSelect }) => {
     if (value === '' || (value && value.match(regex)))
       changeInputState(value);
   };
+
+  useEffect(() => {
+    const saveInputValue = () => {
+      const { value } = inputRef.current;
+      localStorage.setItem(storageId, value);
+    };
+
+    if (withStorage) {
+      // Update input value
+      changeInputState(
+        localStorage.getItem(storageId)
+          ? localStorage.getItem(storageId)
+          : '',
+      );
+      // on refresh update localStorage
+      window.addEventListener('beforeunload', saveInputValue);
+    }
+
+    return () => {
+      if (withStorage) {
+        window.removeEventListener('beforeunload', saveInputValue);
+      }
+    };
+  }, []);
 
   return (
     <Downshift
@@ -109,6 +140,7 @@ const Input = ({ items, placeholder, onSelect }) => {
               })}
               type="text"
               placeholder={placeholder}
+              ref={inputRef}
             />
             {inputValue ? (
               <Icon
@@ -168,6 +200,8 @@ const Input = ({ items, placeholder, onSelect }) => {
 Input.propTypes = {
   placeholder: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
+  withStorage: PropTypes.bool,
+  storageId: PropTypes.string,
   items: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
@@ -178,6 +212,8 @@ Input.propTypes = {
 
 Input.defaultProps = {
   placeholder: null,
+  withStorage: false,
+  storageId: '',
 };
 
 export default Input;
