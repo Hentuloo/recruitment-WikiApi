@@ -15,6 +15,17 @@ const InputField = styled.input`
   font-size: ${({ theme }) => theme.fs.s};
   background-color: ${({ theme }) => theme.color.white};
 `;
+
+const ListElement = styled.li`
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.color.primary[0]};
+  }
+`;
+
 const ListWrapper = styled.ul`
   width: 100%;
   max-height: 170px;
@@ -29,14 +40,8 @@ const ListWrapper = styled.ul`
   ${({ theme }) => theme.mediaQuery.lg} {
     max-height: 400px;
   }
-`;
 
-const ListElement = styled.li`
-  display: flex;
-  padding: 10px 20px;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
+  ${ListElement}:first-of-type {
     background-color: ${({ theme }) => theme.color.primary[0]};
   }
 `;
