@@ -24,15 +24,15 @@ const BackgroundPattern = styled.div`
     background: ${({ theme }) => theme.gradients[0]};
   }
 `;
-const Wrapper = styled.div`
+const Wrapper = styled.main`
   position: relative;
 `;
 
 const MainTemplate = ({ children }) => {
   return (
     <>
-      <BackgroundPattern />
       <Wrapper>{children}</Wrapper>
+      <BackgroundPattern role="presentation" />
     </>
   );
 };

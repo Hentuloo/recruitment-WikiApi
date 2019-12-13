@@ -6,6 +6,10 @@ export default {
       'https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&formatversion=2&prop=extracts&redirects=1&exintro=1&explaintext=1',
   },
 
-  STATEMETS: {},
-  errorMessage: {},
+  STATEMETS: {
+    findCitiesPlaceholder: 'Szukaj miast w...',
+  },
+  errorMessage: {
+    noDescription: 'Nie ma informacji o tym mieście',
+  },
 };

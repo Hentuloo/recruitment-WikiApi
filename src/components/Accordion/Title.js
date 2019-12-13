@@ -4,20 +4,38 @@ import PropTypes from 'prop-types';
 import AccordionContext from './Context';
 
 const Button = styled.button`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 3px 0px;
+  margin: 5px 0px;
   padding: 10px 15px;
   background-color: white;
   border: none;
   border-radius: 10px;
   font-size: ${({ theme }) => theme.fs.m};
   cursor: pointer;
+  box-sizing: border-box;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 25px;
+    border-radius: 10px;
+    border-top: 4px solid ${({ theme }) => theme.color.black[0]};
+    opacity: 0;
+    z-index: 0;
+  }
 
   &:focus {
     outline: none;
+    &::before {
+      opacity: 1;
+    }
   }
 
   ${({ isOpen }) =>
@@ -46,6 +64,8 @@ const Title = ({ children, uniqueLabel }) => {
   return (
     <Button
       type="button"
+      role="switch"
+      aria-checked={activeSection === uniqueLabel}
       isOpen={activeSection === uniqueLabel}
       onClick={() => onChangeSection(uniqueLabel)}
     >

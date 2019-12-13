@@ -12,6 +12,8 @@ import {
   getWikiDescriptionsByTitles,
 } from 'config/Utils';
 
+import Constants from 'config/Constants';
+
 const Wrapper = styled.div`
   position: relative;
   width: 94%;
@@ -108,7 +110,7 @@ const SearchPage = () => {
           withStorage
           storageId="citiesInput"
           items={Countries}
-          placeholder="Szukaj miast w..."
+          placeholder={Constants.STATEMETS.findCitiesPlaceholder}
           onSelect={handleSearch}
         />
         {loading && <StyledSpiner />}
@@ -119,7 +121,8 @@ const SearchPage = () => {
                 <Acordion.Section key={city} uniqueLabel={city}>
                   <Acordion.Title>{city}</Acordion.Title>
                   <Acordion.Content>
-                    {description || 'Nie ma informacji o tym mieście'}
+                    {description ||
+                      Constants.errorMessage.noDescription}
                   </Acordion.Content>
                 </Acordion.Section>
               ))}
